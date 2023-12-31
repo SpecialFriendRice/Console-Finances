@@ -88,27 +88,21 @@ var finances = [
 ];
 
 
-
 // to work with just the figures, the map function creates a new array without altering the original; this is mapping each element with index (1) into a new array
-// console.log(
-//   finances.map(x => x[1])
-// );
-// I seem to be able to use the full expression in a lot of Math functions but I have declared it as a variable with a simpler name below
-//SHALL I REPLACE THIS INTO LATER FUNCTIONS? DOES THE DECLARED VARIABLE BELOW MEAN I CAN GET RID OF THE ORIGINAL MAPPING I DID ABOVE?
 
+// NOTE: I seemed to be able to use the full expression finances.map(x => x[1]) in a lot of Math functions but I have declared it as a variable with a simpler name below
 var profLossArr = (finances.map(x => x[1]))
 
 
-//Calculations on the resulting array of figures can be done with a for loop or the reduce() method
-//For loop
+//Calculations on the resulting array of figures can be done with a for loop or the reduce() method. I am using the for loop
 var netProfLoss = 0;
-  for (var i = 0; i < finances.map(x => x[1]).length; i++) {
-  netProfLoss += finances.map(x => x[1])[i];
+  for (var i = 0; i < profLossArr.length; i++) {
+  netProfLoss += profLossArr[i];
 }
 
 
 // Alternative to for loop is to use the reduce () method as below
-// const netProfLoss = finances.map(x => x[1]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+// const netProfLoss = profLossArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
 
 // to "track what the total change in Profit/Losses are from month to month and then find the average", I have created a new array consisting of figures representing the difference between consecutive numbers in the previous array(s):
@@ -124,24 +118,24 @@ var totalChange = 0;
   }
 
 //to get the average (mean), one can divide by the length of the original array minus one or as below:
-  avChange = totalChange/(monthlyChange.length);
+var avChange = totalChange/(monthlyChange.length);
 
 //Math functions for finding the greatest profit/loss from the most recent array:
-const maxInc = Math.max(...monthlyChange);
-const maxDec = Math.min(...monthlyChange);
+var maxInc = Math.max(...monthlyChange);
+var maxDec = Math.min(...monthlyChange);
 
 //get the index of each of the values in the monthlyChange array
-let maxIncIndex = monthlyChange.indexOf(maxInc);
-let maxDecIndex = monthlyChange.indexOf(maxDec);
+var maxIncIndex = monthlyChange.indexOf(maxInc);
+var maxDecIndex = monthlyChange.indexOf(maxDec);
 
 //get the corresponding date from the original index, where index is one step behind, so add 1. I needed to call them x and y because it wouldn't let me use the notation with brackets
-let x = (maxIncIndex+1)
-let y = (maxDecIndex+1)
+var x = (maxIncIndex+1)
+var y = (maxDecIndex+1)
 
 //call the date, profit/loss pair from finance array
 
-let datePairMaxInc = finances[x];
-let datePairMaxDec = finances[y];
+var datePairMaxInc = finances[x];
+var datePairMaxDec = finances[y];
 
 // extract the date at index zero
 maxIncDate = datePairMaxInc[0];
@@ -163,6 +157,5 @@ console.log("Total: $" + netProfLoss);
 console.log("Average Change: " + avChange.toFixed(2));
 console.log("Greatest Increase in Profits/Losses: " + maxIncDate + " ($" + maxInc + ")");
 console.log("Greatest Decrease in Profits/Losses: " + maxDecDate + " ($" + maxDec + ")");
-
 
 
