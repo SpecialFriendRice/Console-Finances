@@ -109,9 +109,6 @@ var netProfLoss = 0;
 
 // Alternative to for loop is to use the reduce () method as below
 // const netProfLoss = finances.map(x => x[1]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-// console.log(netProfLoss);
-
-
 
 
 // to "track what the total change in Profit/Losses are from month to month and then find the average", I have created a new array consisting of figures representing the difference between consecutive numbers in the previous array(s):
@@ -133,79 +130,24 @@ var totalChange = 0;
 const maxInc = Math.max(...monthlyChange);
 const maxDec = Math.min(...monthlyChange);
 
+//get the index of each of the values in the monthlyChange array
+let maxIncIndex = monthlyChange.indexOf(maxInc);
+let maxDecIndex = monthlyChange.indexOf(maxDec);
 
-//how do i then go  back and find the numbers/integers in the original array of arrays and match them back up with the right month and year? do i use findIndex() or Array.prototype.find or Array.prototype.some() or some() but some seems to just return Boolean values true/false. Do you flatten the original nested array? Do you use filter()? or indexOf()
+//get the corresponding date from the original index, where index is one step behind, so add 1. I needed to call them x and y because it wouldn't let me use the notation with brackets
+let x = (maxIncIndex+1)
+let y = (maxDecIndex+1)
 
-// finances.find(maxInc)
-// finances.find(maxDec)
+//call the date, profit/loss pair from finance array
 
+let datePairMaxInc = finances[x];
+let datePairMaxDec = finances[y];
 
-/// waaaaaaaahhh?
-// function getIndexOfMax(finances, maxInc) {
-//   for (var i = 0; i < finances.length; i++) {
-//     var index = finances[i].indexOf(maxInc);
-//     if (index > -1) {
-//       return [i, index];
-//     }
-//   }
-// }
+// extract the date at index zero
+maxIncDate = datePairMaxInc[0];
+maxDecDate = datePairMaxDec[0];
 
-// function getIndexOfMin(finances, maxDec) {
-//   for (var i = 0; i < finances.length; i++) {
-//     var index = finances[i].indexOf(maxDec);
-//     if (index > -1) {
-//       return [i, index];
-//     }
-//   }
-// }
-
-
-//this from Xpert Learning Assistant, suggests forEach method (but also mentions reduce):
-
-//const nestedArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-
-function findmaxIncIndex(maxInc) {
-  let foundIndex = null;
-
-  finances.forEach((subArray, index) => {
-    subArray.forEach((element, subIndex) => {
-      if (element === maxInc) {
-        foundIndex = [index, subIndex];
-      }
-    });
-  });
-
-  return foundIndex;
-}
-
-const elementIndex = findmaxIncIndex(maxInc);
-console.log(elementIndex); 
-
-//the above was from Xpert Learning Assistant but returns only null, whether maxInc or its actual value are put in the code
-
-
-
-//can I add the months back into the monthlyChange array? Do I turn it back into key:value pairs? is that turning it into an object array and push things to the array?
-
-//should I have used reduce() method to turn the original nested array into an object?
-
-
-
-//before I go to bed
-//do i map all the months into an array, use their index somehow with the index of the monthlyChange array? Is it cheating to say index[0] of monthlyChange array is Feb 2010, which is element [0, 0] in the original finances array? So GetIndex from the monthlyChange array and then map it backwards???
-
-// Using Object.assign to create a new object from array
-//let obj = Object.assign({i}, monthlyChange);
-
-console.log(monthlyChange)
-
-
-//do i need to change shortened month string to a number/
-// this might need functions like Date.parse()
-//or can I find the subarray pair?
-
-
-/* print to console final answers in this format:
+/* Requested formar for results printing to console:
 Financial Analysis 
 ----------------
 Total Months: 86
@@ -219,5 +161,8 @@ console.log (`Financial Analysis \n---------------- `);
 console.log("Total Months : " + finances.length);
 console.log("Total: $" + netProfLoss);
 console.log("Average Change: " + avChange.toFixed(2));
-console.log("Greatest Increase in Profits/Losses: " + "Mon-YYYY" + "($" + maxInc + ")");
-console.log("Greatest Decrease in Profits/Losses: " + "Mon-YYYY" + "($" + maxDec + ")");
+console.log("Greatest Increase in Profits/Losses: " + maxIncDate + " ($" + maxInc + ")");
+console.log("Greatest Decrease in Profits/Losses: " + maxDecDate + " ($" + maxDec + ")");
+
+
+
