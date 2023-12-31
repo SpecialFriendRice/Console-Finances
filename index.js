@@ -99,16 +99,13 @@ var finances = [
 var profLossArr = (finances.map(x => x[1]))
 
 
-
-
-//MATH on resulting array can be done with a for loop or a reduce() function
-
+//Calculations on the resulting array of figures can be done with a for loop or the reduce() method
 //For loop
 var netProfLoss = 0;
   for (var i = 0; i < finances.map(x => x[1]).length; i++) {
   netProfLoss += finances.map(x => x[1])[i];
 }
-// console.log(netProfLoss);
+
 
 // Alternative to for loop is to use the reduce () method as below
 // const netProfLoss = finances.map(x => x[1]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -123,39 +120,84 @@ var monthlyChange=[];
   monthlyChange.push(profLossArr[i]-profLossArr[i-1]);
 }
 
-//Q: do i need to apply the Maths.abs () function to ignore the sign i.e. will negative numbers (loss) mess up a running total? The README is not clear if we are just looking at the absolute number; I've left the negative numbers as they are.
-
-
-//to total the profits/losses each month another for loop is needed:
+//to total the profits/losses each month, another for loop is needed:
 var totalChange = 0;
   for (var i = 0; i< monthlyChange.length; i++) {
     totalChange += monthlyChange[i];
   }
-//to get the average, one can divide by the length of the original array minus one, or 85 or as below:
+
+//to get the average (mean), one can divide by the length of the original array minus one or as below:
   avChange = totalChange/(monthlyChange.length);
 
+//Math functions for finding the greatest profit/loss from the most recent array:
+const maxInc = Math.max(...monthlyChange);
+const maxDec = Math.min(...monthlyChange);
 
-// below isn't working
-// function monthlyDiff(profLossArr) {
-//   monthlyChange=[];
-//   for(var i=0; i<profLossArr.length-1; i++){
-//       monthlyChange.push(profLossArr[i+1]-profLossArr[i]);
+
+//how do i then go  back and find the numbers/integers in the original array of arrays and match them back up with the right month and year? do i use findIndex() or Array.prototype.find or Array.prototype.some() or some() but some seems to just return Boolean values true/false. Do you flatten the original nested array? Do you use filter()? or indexOf()
+
+// finances.find(maxInc)
+// finances.find(maxDec)
+
+
+/// waaaaaaaahhh?
+// function getIndexOfMax(finances, maxInc) {
+//   for (var i = 0; i < finances.length; i++) {
+//     var index = finances[i].indexOf(maxInc);
+//     if (index > -1) {
+//       return [i, index];
+//     }
 //   }
-//   console.log(monthlyChange);
+// }
+
+// function getIndexOfMin(finances, maxDec) {
+//   for (var i = 0; i < finances.length; i++) {
+//     var index = finances[i].indexOf(maxDec);
+//     if (index > -1) {
+//       return [i, index];
+//     }
+//   }
 // }
 
 
-// function diff(profLossArr) {
-//   var diffArray = [];
-//   for (var i = 1; i < profLossArr.length; i++)  
-//   diffArray.push(profLossArr[i] - profLossArr[i - 1])
-//   return diffArray;
-// }
+//this from Xpert Learning Assistant, suggests forEach method (but also mentions reduce):
 
-// console.log(diffArray);
+//const nestedArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+
+function findmaxIncIndex(maxInc) {
+  let foundIndex = null;
+
+  finances.forEach((subArray, index) => {
+    subArray.forEach((element, subIndex) => {
+      if (element === maxInc) {
+        foundIndex = [index, subIndex];
+      }
+    });
+  });
+
+  return foundIndex;
+}
+
+const elementIndex = findmaxIncIndex(maxInc);
+console.log(elementIndex); 
+
+//the above was from Xpert Learning Assistant but returns only null, whether maxInc or its actual value are put in the code
 
 
 
+//can I add the months back into the monthlyChange array? Do I turn it back into key:value pairs? is that turning it into an object array and push things to the array?
+
+//should I have used reduce() method to turn the original nested array into an object?
+
+
+
+//before I go to bed
+//do i map all the months into an array, use their index somehow with the index of the monthlyChange array? Is it cheating to say index[0] of monthlyChange array is Feb 2010, which is element [0, 0] in the original finances array? So GetIndex from the monthlyChange array and then map it backwards???
+
+// Using Object.assign to create a new object from array
+//let obj = Object.assign({i}, monthlyChange);
+
+console.log(monthlyChange)
 
 
 //do i need to change shortened month string to a number/
@@ -176,6 +218,6 @@ Greatest Decrease in Profits/Losses: Sep-2013 ($-2196167)
 console.log (`Financial Analysis \n---------------- `);
 console.log("Total Months : " + finances.length);
 console.log("Total: $" + netProfLoss);
-console.log("Average Change: " + avChange.toFixed(2))
-// console.log("Greatest Increase in Profits/Losses: " + "Mon-YYYY" + TBC MATHS)
-// console.log("Greatest Decrease in Profits/Losses: " + "Mon-YYYY" + TBC MATHS)
+console.log("Average Change: " + avChange.toFixed(2));
+console.log("Greatest Increase in Profits/Losses: " + "Mon-YYYY" + "($" + maxInc + ")");
+console.log("Greatest Decrease in Profits/Losses: " + "Mon-YYYY" + "($" + maxDec + ")");
